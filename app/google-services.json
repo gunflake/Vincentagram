@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "685722927363",
+    "firebase_url": "https://vincentagram-66f70.firebaseio.com",
+    "project_id": "vincentagram-66f70",
+    "storage_bucket": "vincentagram-66f70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685722927363:android:f11dcb458e3e6e8734e936",
+        "android_client_info": {
+          "package_name": "com.example.vincentagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685722927363-p4jm41jl9i9uo7v5a0bafnjmsts3accl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vincentagram",
+            "certificate_hash": "b3f9362df82534a255a4192ef7b27cd373254724"
+          }
+        },
+        {
+          "client_id": "685722927363-fls8isfpm78s81jmpeabpu14kbjiqfq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9SycAsA7Oef5k7etQUXRNsZERa_khiPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685722927363-fls8isfpm78s81jmpeabpu14kbjiqfq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
