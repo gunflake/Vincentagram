@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.vincentagram.R
 import com.example.vincentagram.navigation.model.ContentDTO
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.item_detail.view.*
 class DetailViewFragment : Fragment(){
 
     var fireStore : FirebaseFirestore? = null
+    var uid : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +27,7 @@ class DetailViewFragment : Fragment(){
     ): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_detail, container, false)
         fireStore = FirebaseFirestore.getInstance()
+        uid = FirebaseAuth.getInstance().currentUser?.uid
 
         view.detailViewFragment_recyclerView.adapter = DetailViewRecyclerViewAdapter()
         view.detailViewFragment_recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -78,6 +81,40 @@ class DetailViewFragment : Fragment(){
             // Profile Image
             Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).into(viewHolder.detailViewItem_profile_image)
 
+            // Like Event
+            viewHolder.detailViewItem_favorite_imageView.setOnClickListener {
+                favoriteEvent(position)
+            }
+
+            // Like Image view process
+            if(contentDTOs!![position].favorites.containsKey(uid)){
+                // 내가 좋아요 버튼을 클릭했을 경우
+                viewHolder.detailViewItem_favorite_imageView.setImageResource(R.drawable.ic_favorite)
+            }else{
+                // 내가 좋아요 버튼을 클릭 안했을 경우
+                viewHolder.detailViewItem_favorite_imageView.setImageResource(R.drawable.ic_favorite_border)
+            }
+
+        }
+
+        private fun favoriteEvent(position : Int){
+            var tsDoc = fireStore?.collection("images")?.document(contentUidList[position])
+            fireStore?.runTransaction { transaction ->
+
+                var contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
+
+                if(contentDTO!!.favorites.containsKey(uid)){
+                    // 좋아요 버튼이 클릭되어 있을 떄
+                    contentDTO.favoriteCount -= 1
+                    contentDTO.favorites.remove(uid)
+                }else{
+                    // 좋아요 버튼이 클릭안되어 있을 때
+                    contentDTO.favoriteCount += 1
+                    contentDTO.favorites.put(uid!!, true)
+                }
+
+                transaction.set(tsDoc, contentDTO)
+            }
         }
 
     }
