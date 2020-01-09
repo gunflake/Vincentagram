@@ -1,5 +1,6 @@
 package com.example.vincentagram.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
+import com.example.vincentagram.LoginActivity
+import com.example.vincentagram.MainActivity
 import com.example.vincentagram.R
 import com.example.vincentagram.navigation.model.ContentDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment(){
@@ -25,7 +29,7 @@ class UserFragment : Fragment(){
     var firestore : FirebaseFirestore? = null
     var uid : String? = null
     var auth : FirebaseAuth? = null
-
+    var curerntUseruid : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +41,30 @@ class UserFragment : Fragment(){
         uid = arguments?.getString("destinationUid")
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        curerntUseruid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if(uid == curerntUseruid){ //My Page
+            fragmentView?.account_btn_follow_signout?.text = getString(R.string.signout)
+            fragmentView?.account_btn_follow_signout?.setOnClickListener {
+                activity?.finish()
+                auth?.signOut()
+                startActivity(Intent(activity, LoginActivity::class.java))
+            }
+        }else{ // Other User Page
+            fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+            var mainActivity = (activity as MainActivity)
+
+            mainActivity.toolbar_username.text = arguments?.getString("destinationUserId")
+            mainActivity.toolbar_arrow_back.setOnClickListener {
+                mainActivity.bottom_navigaton.selectedItemId = R.id.action_home
+            }
+
+            mainActivity.toolbar_arrow_back.visibility = View.VISIBLE
+            mainActivity.toolbar_username.visibility = View.VISIBLE
+            mainActivity.toolbar_logo_image.visibility = View.GONE
+
+
+        }
 
         fragmentView?.account_recycleView?.adapter =  UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recycleView?.layoutManager = GridLayoutManager(activity, 3)
@@ -78,6 +106,10 @@ class UserFragment : Fragment(){
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageView = (holder as CustomViewHolder).imageView
             Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageView)
+
+
+
+
         }
 
     }

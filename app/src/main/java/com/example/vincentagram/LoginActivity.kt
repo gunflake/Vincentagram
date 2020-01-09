@@ -23,6 +23,11 @@ class LoginActivity : AppCompatActivity() {
     var GOOGLE_LOGIN_CODE = 9001
     var callbackManager : CallbackManager? = null
 
+    // 자동 로그인 기능
+    override fun onStart() {
+        super.onStart()
+        moveMainPage(auth?.currentUser)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
     fun moveMainPage(user:FirebaseUser?){
         if(user != null){
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }

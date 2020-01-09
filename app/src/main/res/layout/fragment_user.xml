@@ -14,7 +14,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"/>
         <Button
-            android:id="@+id/account_btn_follow"
+            android:id="@+id/account_btn_follow_signout"
             android:text="@string/follow"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/account_iv_profile"
@@ -23,7 +23,7 @@
         <LinearLayout
             android:gravity="center"
             android:layout_toEndOf="@+id/account_iv_profile"
-            android:layout_above="@+id/account_btn_follow"
+            android:layout_above="@+id/account_btn_follow_signout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
