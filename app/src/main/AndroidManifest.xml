@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".navigation.AddPhotoActivity"></activity>
+        <activity android:name=".navigation.CommentActivity"></activity>
+        <activity android:name=".navigation.AddPhotoActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity> <!-- FaceBook meta-data, Facebook에 대한 활동, Chrome 맞춤 탭에 대한 활동 요소 추가 -->
+        <activity android:name=".MainActivity" /> <!-- FaceBook meta-data, Facebook에 대한 활동, Chrome 맞춤 탭에 대한 활동 요소 추가 -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
