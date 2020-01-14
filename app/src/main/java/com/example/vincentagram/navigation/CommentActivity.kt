@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.vincentagram.R
+import com.example.vincentagram.navigation.model.AlarmDTO
 import com.example.vincentagram.navigation.model.ContentDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +24,7 @@ class CommentActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
     var firestore : FirebaseFirestore? = null
     var contentUid : String? = null
+    var destinationUid : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,7 @@ class CommentActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         contentUid = intent.getStringExtra("contentUid")
+        destinationUid = intent.getStringExtra("destinationUid")
 
         activityComment_recyclerView.adapter = CommentActivityRecyclerViewAdapter()
         activityComment_recyclerView.layoutManager = LinearLayoutManager(this)
@@ -51,8 +54,23 @@ class CommentActivity : AppCompatActivity() {
                     Log.e("COMMENT", "Comment fail enroll", exception)
                 }
 
+            alarmEnroll(destinationUid, activityComment_editText.text.toString())
             activityComment_editText.setText("")
         }
+    }
+
+    fun alarmEnroll(destinationUid: String?, message: String?) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.uid = auth?.currentUser?.uid
+        alarmDTO.email = auth?.currentUser?.email
+        alarmDTO.message = message
+        alarmDTO.datetime = System.currentTimeMillis()
+        alarmDTO.type = 1 // Comment Type = 1
+
+        firestore?.collection("alarms")?.document()?.set(alarmDTO)
+            ?.addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully written!") }
+            ?.addOnFailureListener { e -> Log.w("TAG", "Error writing document", e) }
     }
 
     inner class CommentActivityRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
