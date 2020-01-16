@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
             R.id.action_search -> {
                 var gridFragment = GridFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.main_content, gridFragment)
-                    .commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, gridFragment).addToBackStack(null).commit()
                 return true
             }
             R.id.action_add_a_photo -> {
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
             R.id.action_favorite_alarm -> {
                 var alarmFragment = AlarmFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.main_content, alarmFragment)
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, alarmFragment).addToBackStack(null)
                     .commit()
                 return true
             }
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 var uid = FirebaseAuth.getInstance().currentUser?.uid
                 bundle.putString("destinationUid", uid)
                 userFragment.arguments = bundle
-                supportFragmentManager.beginTransaction().replace(R.id.main_content, userFragment)
+                supportFragmentManager.beginTransaction().replace(R.id.main_content, userFragment).addToBackStack(null)
                     .commit()
                 return true
             }
